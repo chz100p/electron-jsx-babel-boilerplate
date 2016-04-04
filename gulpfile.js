@@ -57,7 +57,19 @@ gulp.task('compile:scripts:watch', function (done) {
     .pipe($.watch('src/**/*.{js,jsx}', {verbose: true}))
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
-    .pipe($.babel({stage: 0}))
+    .pipe($.babel({
+			presets: [
+				'es2015',
+				'stage-1',
+				'react'
+			],
+			plugins: [
+				'transform-runtime',
+				'add-module-exports',
+				'transform-decorators-legacy',
+				'transform-class-properties'
+			]
+        }))
     .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest(serveDir))
   ;
@@ -67,7 +79,19 @@ gulp.task('compile:scripts:watch', function (done) {
 // Compile scripts for distribution
 gulp.task('compile:scripts', function () {
   return gulp.src('src/**/*.{js,jsx}')
-    .pipe($.babel({stage: 0}))
+    .pipe($.babel({
+			presets: [
+				'es2015',
+				'stage-1',
+				'react'
+			],
+			plugins: [
+				'transform-runtime',
+				'add-module-exports',
+				'transform-decorators-legacy',
+				'transform-class-properties'
+			]
+        }))
     .pipe($.uglify())
     .pipe(gulp.dest(distDir))
   ;
@@ -120,8 +144,8 @@ gulp.task('bundle:dependencies', function () {
     return {name: dep, main: main.map(function (it) {return path.basename(it);})};
   });
 
-  // add babel/polyfill module
-  modules.push({name: 'babel', main: ['polyfill.js']});
+  // // add babel/polyfill module
+  // modules.push({name: 'babel', main: ['polyfill.js']});
 
   // create bundle file and minify for each main files
   modules.forEach(function (it) {

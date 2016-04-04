@@ -1,5 +1,5 @@
 'use strict';
-require('babel/polyfill');
+require('babel-polyfill');
 
 import app from 'app';
 import BrowserWindow from 'browser-window';
